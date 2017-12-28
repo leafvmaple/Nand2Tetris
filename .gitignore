@@ -1,4 +1,6 @@
 *.cmp
 *.out
 *.tst
+*.out
 tools
+verilog
