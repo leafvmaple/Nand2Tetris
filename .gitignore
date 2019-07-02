@@ -2,5 +2,7 @@
 *.out
 *.tst
 *.out
+*.hack
+*.zip
 tools
 verilog
