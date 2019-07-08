@@ -1,0 +1,28 @@
+start:
+	; Get write handle
+	invoke GetStdHandle, -11
+	mov [hConsoleOutput], eax
+	
+	;InternetOpen
+	invoke InternetOpen, addr szAgent, INTERNET_OPEN_TYPE_DIRECT, 0, 0, 0
+	mov [hInternet], eax
+	cmp hInternet, 0
+	je failInternetOpen
+	
+	;InternetOpenUrl
+	invoke InternetOpenUrl, hInternet, offset szUrl, 0, 0, INTERNET_FLAG_RELOAD, 0
+	mov [hFile], eax
+	cmp hFile, 0
+	je failInternetOpenUrl
+	
+	;InternetReadFile
+	invoke InternetReadFile, hFile, offset szData, 5000, offset bytesRead
+	cmp eax, 0
+	je failInternetReadFile
+	
+	;Success
+	invoke WriteConsole, hConsoleOutput, offset szData, bytesRead, offset bytesWritten, 0
+	
+	invoke InternetCloseHandle, hInternet
+	jmp complete
+end start
